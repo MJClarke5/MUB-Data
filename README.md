@@ -15,6 +15,8 @@
 ```r
 library(tidyverse)
 
-pcard_data <- read.csv(2017-
+pcard_data <- read.csv("Pra Info.csv")
+
+column_na = colsum(is.na(pcard_data))
 
 ```
