@@ -27,6 +27,11 @@ pcard_data = pcard_data %>%
   mutate(Invoice.Date = ymd(Invoice.Date) %>%
   group_by(Invoice.Date) %>%
   summarize(Trans.Amt)
+
+hist(pcard_data$Invoice.Date)
+
+mean(pcard_data$Trans.Amt, na.rm = TRUE)
+median(pcard_data$Trans.Amt)
   
 
 ```
