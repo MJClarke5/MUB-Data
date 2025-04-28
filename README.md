@@ -19,4 +19,14 @@ pcard_data <- read.csv("Pra Info.csv")
 
 column_na = colsum(is.na(pcard_data))
 
+#Light EDA
+
+summary(pcard_data)
+
+pcard_data = pcard_data %>%
+  mutate(Invoice.Date = ymd(Invoice.Date) %>%
+  group_by(Invoice.Date) %>%
+  summarize(Trans.Amt)
+  
+
 ```
