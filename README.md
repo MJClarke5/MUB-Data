@@ -33,5 +33,6 @@ hist(pcard_data$Invoice.Date)
 mean(pcard_data$Trans.Amt, na.rm = TRUE)
 median(pcard_data$Trans.Amt)
   
-
+#Linear Regression
+summary(lm(Trans.Amt ~. , data = pcard_data))
 ```
