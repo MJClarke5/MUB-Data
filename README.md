@@ -41,4 +41,6 @@ summary(lm(Trans.Amt ~. , data = pcard_data))
 #FFT
 fft = FFT(pcard_data_agg$Trans.Amt)
 
+pred = predict(fft)
+
 ```
