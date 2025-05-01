@@ -38,9 +38,58 @@ plot(x = pcard_data_agg$Invoice.Date, y = pcard_data_agg$Trans.Amt)
 #Linear Regression
 summary(lm(Trans.Amt ~. , data = pcard_data))
 
-#FFT
+#FFT - Monthly
 fft = FFT(pcard_data_agg$Trans.Amt)
 
 pred = predict(fft)
 
+data_by_month = pcard_data %>%
+  group_by(Invoice.Date) %>% 
+  summarise(y = sum(Trans.Amt)) %>% 
+  mutate(y_std = c(0, diff(y)))
+
+y = data_by_month$y_std
+#Plot it to show the hourly by day to find the trends within each day of the week
+FFT = fft(y)
+
+#Magnitude of the results
+magnitude_fft <-Mod(FFT)
+hist(magnitude_fft[2:8689], main = "Magnitude of FFT", xlab = "Magnitude per Index")
+
+#Phase
+phase_fft <- Arg(FFT)
+
+#Frequency - FFT
+n <- length(FFT)
+fs <- 1  # Sampling frequency
+freqs <- (0:(n/2))/ n
+power <- Mod(FFT[1:(n/2 + 1)])^2  # Power spectrum
+
+# Convert frequencies to periods (inverse of frequency)
+periods <- 1 / freqs
+
+# Plot periodogram
+data_fft <- tibble(
+  period = periods,
+  power = power) %>%
+  filter(is.finite(period))  # Remove infinite values
+
+ggplot(data_fft, aes(x = period, y = (power) )) +
+  geom_line() +
+  scale_x_log10() +  # Log scale to better visualize
+  labs(title = "Periodogram (FFT)", x = "Period (Days)", y = "Power") +
+  theme_minimal()
+
+# Zero out small frequencies to keep only dominant components
+threshold <- 0.1 * max(Mod(FFT))  # Keep only significant frequencies
+fft_filtered <- ifelse(Mod(FFT) > threshold, FFT, 0)
+
+# Inverse FFT to reconstruct the signal
+reconstructed_signal <- Re(fft(fft_filtered, inverse = TRUE) / n)
+
+# convert model fit (on stationary 'diffed' series) to counts
+reconstructed_signal[1] = 985
+yhat = cumsum(reconstructed_signal)
+with(data, plot(date, y, type = "l", ylim = c(-2000, 9000)))+
+  lines(x = data$date, y = yhat, col = "blue")
 ```
