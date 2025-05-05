@@ -15,6 +15,7 @@
 ```r
 library(tidyverse)
 library(fftw)
+library(nixtlar)
 
 pcard_data <- read.csv("Pra Info.csv")
 
