@@ -93,4 +93,37 @@ reconstructed_signal[1] = 985
 yhat = cumsum(reconstructed_signal)
 with(data, plot(date, y, type = "l", ylim = c(-2000, 9000)))+
   lines(x = data$date, y = yhat, col = "blue")
+
+#Nixlar
+
+#Inferred Frequency
+freq <- NULL
+infer_frequency(pcard_data, freq)
+
+nixtla_client_historic(
+pcard_data,
+freq = NULL,
+id_col = NULL,
+time_col = "ds",
+target_col = "y",
+level = NULL,
+quantiles = NULL,
+finetune_steps = 0,
+finetune_loss = "default",
+clean_ex_first = TRUE,
+model = "timegpt-1"
+)
+
+#Plot
+nixtla_client_plot(
+pcard_data,
+fcst = NULL,
+h = NULL,
+id_col = "unique_id",
+time_col = "ds",
+target_col = "y",
+unique_ids = NULL,
+max_insample_length = NULL,
+plot_anomalies = FALSE
+)
 ```
