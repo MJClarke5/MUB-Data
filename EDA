@@ -2,4 +2,4 @@ hist(pcard_data$Trans.Amt)
 hist(pcard_data$Invoice.Date)
 hist(pcard_data$Card_Number)
 
-
+mean(pcard_data$Trans.Amt, na.rm = TRUE)
