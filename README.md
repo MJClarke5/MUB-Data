@@ -11,33 +11,3 @@
 #Transactions from 06/2022 - 08/2023 is from MRC's purchasing cards, whereas from that point onward is under Matthew Clarke's purchasing cards.
 
 #Names are omitted from the data set to protect their identity
-
-```r
-library(tidyverse)
-library(fftw)
-library(nixtlar)
-
-pcard_data <- read.csv("Pra Info.csv")
-
-column_na = colsum(is.na(pcard_data))
-
-#Light EDA
-
-summary(pcard_data)
-
-pcard_data_agg = pcard_data %>%
-  mutate(Invoice.Date = ymd(Invoice.Date) %>%
-  group_by(Invoice.Date) %>%
-  summarize(Trans.Amt)
-
-hist(pcard_data$Invoice.Date)
-mean(pcard_data$Trans.Amt, na.rm = TRUE)
-median(pcard_data$Trans.Amt)
-
-plot(x = pcard_data_agg$Invoice.Date, y = pcard_data_agg$Trans.Amt)
-  
-#Linear Regression
-summary(lm(Trans.Amt ~. , data = pcard_data))
-
- 
-```
