@@ -1,5 +1,27 @@
-hist(pcard_data$Trans.Amt)
+library(tidyverse)
+library(fftw)
+library(nixtlar)
+
+pcard_data <- read.table("Pcard Data - 6.12.2022-7.10.2025.xlsx")
+
+column_na = colsum(is.na(pcard_data))
+
+#Light EDA
+
+summary(pcard_data)
+
+pcard_data_agg = pcard_data %>%
+  mutate(Invoice.Date = ymd(Invoice.Date) %>%
+  group_by(Invoice.Date) %>%
+  summarize(Trans.Amt)
+
 hist(pcard_data$Invoice.Date)
+mean(pcard_data$Trans.Amt, na.rm = TRUE)
+median(pcard_data$Trans.Amt)
+hist(pcard_data$Trans.Amt)
 hist(pcard_data$Card_Number)
 
-mean(pcard_data$Trans.Amt, na.rm = TRUE)
+plot(x = pcard_data_agg$Invoice.Date, y = pcard_data_agg$Trans.Amt)
+  
+#Linear Regression
+summary(lm(Trans.Amt ~. , data = pcard_data))
